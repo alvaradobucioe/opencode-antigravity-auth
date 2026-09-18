@@ -52,6 +52,7 @@ import { initLogger, createLogger } from "./plugin/logger";
 import { initHealthTracker, getHealthTracker, initTokenTracker, getTokenTracker } from "./plugin/rotation";
 import { initAntigravityVersion } from "./plugin/version";
 import { executeSearch } from "./plugin/search";
+import { detectModelsFromApi, getVerifiedModelDefinitions } from "./plugin/models/detector";
 import type {
   GetAuth,
   LoaderResult,
@@ -1436,6 +1437,44 @@ export const createAntigravityPlugin = (providerId: string) => async (
             });
           } catch {
             // TUI may not be available
+          }
+        }
+      }
+
+      // Dynamically discover and populate models available to the account from the Antigravity API
+      try {
+        if (!provider.models) {
+          provider.models = {};
+        }
+
+        let detectedModels: import("./plugin/config/models").OpencodeModelDefinitions | null = null;
+        if (auth.access && !accessTokenExpired(auth)) {
+          const primaryAccount = accountManager.getAccounts()[0];
+          const discoveryProject = primaryAccount?.parts.projectId || ANTIGRAVITY_DEFAULT_PROJECT_ID;
+          detectedModels = await detectModelsFromApi(auth.access, discoveryProject, ANTIGRAVITY_ENDPOINT);
+        } else {
+          detectedModels = getVerifiedModelDefinitions();
+        }
+
+        if (detectedModels) {
+          for (const [modelId, def] of Object.entries(detectedModels)) {
+            provider.models[modelId] = {
+              ...def,
+              cost: { input: 0, output: 0 },
+            };
+          }
+        }
+      } catch (err) {
+        log.warn("Dynamic model discovery failed, using verified catalog", { error: String(err) });
+        const fallbackModels = getVerifiedModelDefinitions();
+        if (fallbackModels && provider.models) {
+          for (const [modelId, def] of Object.entries(fallbackModels)) {
+            if (!provider.models[modelId]) {
+              provider.models[modelId] = {
+                ...def,
+                cost: { input: 0, output: 0 },
+              };
+            }
           }
         }
       }

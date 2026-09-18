@@ -51,17 +51,18 @@ export const ANTIGRAVITY_REDIRECT_URI = "http://localhost:51121/oauth-callback";
  * Root endpoints for the Antigravity API (in fallback order).
  * Daily cloudcode-pa endpoint operates with immediate access to 3.x models.
  */
-export const ANTIGRAVITY_ENDPOINT_DAILY = "https://daily-cloudcode-pa.googleapis.com";
 export const ANTIGRAVITY_ENDPOINT_DAILY_SANDBOX = "https://daily-cloudcode-pa.sandbox.googleapis.com";
+export const ANTIGRAVITY_ENDPOINT_DAILY = "https://daily-cloudcode-pa.sandbox.googleapis.com";
+export const ANTIGRAVITY_ENDPOINT_DAILY_PROD = "https://daily-cloudcode-pa.googleapis.com";
 export const ANTIGRAVITY_ENDPOINT_AUTOPUSH = "https://autopush-cloudcode-pa.sandbox.googleapis.com";
 export const ANTIGRAVITY_ENDPOINT_PROD = "https://cloudcode-pa.googleapis.com";
 
 /**
- * Endpoint fallback order (daily → daily sandbox → autopush → prod).
+ * Endpoint fallback order (daily sandbox → daily prod → autopush → prod).
  */
 export const ANTIGRAVITY_ENDPOINT_FALLBACKS = [
   ANTIGRAVITY_ENDPOINT_DAILY,
-  ANTIGRAVITY_ENDPOINT_DAILY_SANDBOX,
+  ANTIGRAVITY_ENDPOINT_DAILY_PROD,
   ANTIGRAVITY_ENDPOINT_AUTOPUSH,
   ANTIGRAVITY_ENDPOINT_PROD,
 ] as const;
@@ -71,8 +72,8 @@ export const ANTIGRAVITY_ENDPOINT_FALLBACKS = [
  */
 export const ANTIGRAVITY_LOAD_ENDPOINTS = [
   ANTIGRAVITY_ENDPOINT_DAILY,
+  ANTIGRAVITY_ENDPOINT_DAILY_PROD,
   ANTIGRAVITY_ENDPOINT_PROD,
-  ANTIGRAVITY_ENDPOINT_DAILY_SANDBOX,
   ANTIGRAVITY_ENDPOINT_AUTOPUSH,
 ] as const;
 
@@ -82,15 +83,15 @@ export const ANTIGRAVITY_LOAD_ENDPOINTS = [
 export const ANTIGRAVITY_ENDPOINT = ANTIGRAVITY_ENDPOINT_DAILY;
 
 /**
- * Gemini CLI endpoint (defaults to daily cloudcode-pa).
+ * Gemini CLI endpoint (defaults to daily cloudcode-pa sandbox).
  */
 export const GEMINI_CLI_ENDPOINT = ANTIGRAVITY_ENDPOINT_DAILY;
 
 /**
  * Default project id used for Antigravity accounts.
  */
-export const ANTIGRAVITY_DEFAULT_PROJECT_ID = "default-cli-project";
-export const ANTIGRAVITY_FALLBACK_PROJECT_ID = "aicode-consumers";
+export const ANTIGRAVITY_DEFAULT_PROJECT_ID = "aicode-consumers";
+export const ANTIGRAVITY_FALLBACK_PROJECT_ID = "default-cli-project";
 
 /**
  * Validated working projects across Antigravity endpoints.

@@ -106,6 +106,12 @@ export const VERIFIED_ANTIGRAVITY_MODELS: Record<string, RawModelApiInfo> = {
     minThinkingBudget: 128,
     thinkingBudget: -1,
   } as RawModelApiInfo,
+  "gemini-3.1-flash-lite": {
+    maxTokens: 1048576,
+    maxOutputTokens: 65535,
+    supportsThinking: false,
+    images: true,
+  } as RawModelApiInfo,
   "gemini-3-flash": {
     maxTokens: 1048576,
     maxOutputTokens: 65536,

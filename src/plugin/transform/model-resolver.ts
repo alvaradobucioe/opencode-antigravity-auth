@@ -57,6 +57,7 @@ export const MODEL_ALIASES: Record<string, string> = {
   "gemini-3.5-flash-low": "gemini-3.5-flash-low",
   "gemini-3.5-flash-extra-low": "gemini-3.5-flash-extra-low",
   "gemini-3.5-flash-lite": "gemini-3.5-flash-lite",
+  "gemini-3.1-flash-lite": "gemini-3.1-flash-lite",
   "gemini-3-flash": "gemini-3-flash",
   "gemini-3-flash-low": "gemini-3-flash",
   "gemini-3-flash-medium": "gemini-3-flash",

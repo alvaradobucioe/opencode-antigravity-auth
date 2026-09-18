@@ -8,6 +8,8 @@ import {
   type AccountStatus,
 } from "./ui/auth-menu";
 import { updateOpencodeConfig } from "./config/updater";
+import { loadAccounts } from "./storage";
+import { detectModelsFromApi, getVerifiedModelDefinitions } from "./models/detector";
 
 export async function promptProjectId(): Promise<string> {
   const rl = createInterface({ input, output });
@@ -143,7 +145,33 @@ export async function promptLoginMode(existingAccounts: ExistingAccountInfo[]): 
         return { mode: "fresh", deleteAll: true };
 
       case "configure-models": {
-        const result = await updateOpencodeConfig();
+        console.log("\n🔍 Detecting available models from Antigravity API...");
+        let dynamicModels: Record<string, unknown> | undefined;
+        try {
+          const stored = await loadAccounts();
+          const activeAcc = stored?.accounts[stored.activeIndex ?? 0] ?? stored?.accounts[0];
+          if (activeAcc?.refreshToken) {
+            const { refreshAccessToken } = await import("./token");
+            const refreshed = await refreshAccessToken(
+              { type: "oauth", refresh: activeAcc.refreshToken },
+              {} as any,
+              "antigravity"
+            );
+            if (refreshed?.access) {
+              const projectId = activeAcc.projectId || "aicode-consumers";
+              dynamicModels = await detectModelsFromApi(refreshed.access, projectId);
+              console.log(`✓ Fetched ${Object.keys(dynamicModels).length} model definitions from live API`);
+            }
+          }
+        } catch {
+          // If network / auth fails, fallback to verified models catalog
+        }
+
+        if (!dynamicModels) {
+          dynamicModels = getVerifiedModelDefinitions();
+        }
+
+        const result = await updateOpencodeConfig({ models: dynamicModels });
         if (result.success) {
           console.log(`\n✓ Models configured in ${result.configPath}\n`);
         } else {

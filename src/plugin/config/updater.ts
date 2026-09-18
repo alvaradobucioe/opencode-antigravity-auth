@@ -35,6 +35,8 @@ export interface OpencodeConfig {
 export interface UpdateConfigOptions {
   /** Override the config file path (for testing) */
   configPath?: string;
+  /** Custom model definitions (e.g. dynamically discovered from API) */
+  models?: Record<string, unknown>;
 }
 
 // =============================================================================
@@ -151,8 +153,9 @@ export async function updateOpencodeConfig(
       config.provider.google = {};
     }
 
-    // Replace google models with plugin models
-    config.provider.google.models = { ...OPENCODE_MODEL_DEFINITIONS };
+    // Replace google models with plugin models (either custom dynamic models or defaults)
+    const modelsToConfigure = options.models ?? OPENCODE_MODEL_DEFINITIONS;
+    config.provider.google.models = { ...modelsToConfigure };
 
     // Ensure config directory exists
     const configDir = dirname(configPath);
