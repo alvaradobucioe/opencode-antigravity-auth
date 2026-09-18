@@ -66,9 +66,32 @@ export const ANTIGRAVITY_ENDPOINT = ANTIGRAVITY_ENDPOINT_DAILY;
 export const GEMINI_CLI_ENDPOINT = ANTIGRAVITY_ENDPOINT_PROD;
 
 /**
- * Hardcoded project id used when Antigravity does not return one (e.g., business/workspace accounts).
+ * Default project id used for consumer accounts and when Antigravity does not return one.
  */
-export const ANTIGRAVITY_DEFAULT_PROJECT_ID = "rising-fact-p41fc";
+export const ANTIGRAVITY_DEFAULT_PROJECT_ID = "aicode-consumers";
+export const ANTIGRAVITY_FALLBACK_PROJECT_ID = "rising-fact-p41fc";
+
+/**
+ * Validated working projects across Antigravity sandbox and developer endpoints.
+ */
+export const ANTIGRAVITY_VALID_PROJECTS = [
+  "aicode-consumers",
+  "aicode-developer",
+  "aicode-insider",
+  "aicode-preview",
+  "aicode-testing",
+  "aicode-debug",
+  "antigravity-preview",
+  "antigravity-insider",
+  "antigravity-developer",
+  "antigravity-dogfood",
+  "antigravity-debug",
+  "gemini-developer-sandbox",
+  "gemini-insider-preview",
+  "gemini-testing-project",
+  "rising-fact-p41fc",
+  "cloudaicompanion-corp",
+] as const;
 
 export const ANTIGRAVITY_VERSION_FALLBACK = "1.18.3";
 let antigravityVersion = ANTIGRAVITY_VERSION_FALLBACK;

@@ -38,6 +38,79 @@ const DEFAULT_MODALITIES: ModelModalities = {
 };
 
 export const OPENCODE_MODEL_DEFINITIONS: OpencodeModelDefinitions = {
+  "antigravity-gemini-3.8-flash": {
+    name: "Gemini 3.8 Flash (Antigravity)",
+    limit: { context: 1048576, output: 65536 },
+    modalities: DEFAULT_MODALITIES,
+    variants: {
+      minimal: { thinkingLevel: "minimal" },
+      low: { thinkingLevel: "low" },
+      medium: { thinkingLevel: "medium" },
+      high: { thinkingLevel: "high" },
+    },
+  },
+  "antigravity-gemini-3.7-flash": {
+    name: "Gemini 3.7 Flash (Antigravity)",
+    limit: { context: 1048576, output: 65536 },
+    modalities: DEFAULT_MODALITIES,
+    variants: {
+      minimal: { thinkingLevel: "minimal" },
+      low: { thinkingLevel: "low" },
+      medium: { thinkingLevel: "medium" },
+      high: { thinkingLevel: "high" },
+    },
+  },
+  "antigravity-gemini-3.6-flash": {
+    name: "Gemini 3.6 Flash (Antigravity)",
+    limit: { context: 1048576, output: 65536 },
+    modalities: DEFAULT_MODALITIES,
+    variants: {
+      minimal: { thinkingLevel: "minimal" },
+      low: { thinkingLevel: "low" },
+      medium: { thinkingLevel: "medium" },
+      high: { thinkingLevel: "high" },
+    },
+  },
+  "antigravity-gemini-3.5-flash-lite": {
+    name: "Gemini 3.5 Flash Lite (Antigravity)",
+    limit: { context: 1048576, output: 65536 },
+    modalities: DEFAULT_MODALITIES,
+  },
+  "antigravity-gemini-2.5-flash-thinking": {
+    name: "Gemini 2.5 Flash Thinking (Antigravity)",
+    limit: { context: 1048576, output: 65536 },
+    modalities: DEFAULT_MODALITIES,
+    variants: {
+      low: { thinkingLevel: "low" },
+      medium: { thinkingLevel: "medium" },
+      high: { thinkingLevel: "high" },
+    },
+  },
+  "antigravity-gemini-3-flash-agent": {
+    name: "Gemini 3 Flash Agent (Antigravity)",
+    limit: { context: 1048576, output: 65536 },
+    modalities: DEFAULT_MODALITIES,
+  },
+  "antigravity-gemini-pro-agent": {
+    name: "Gemini Pro Agent (Antigravity)",
+    limit: { context: 1048576, output: 65536 },
+    modalities: DEFAULT_MODALITIES,
+  },
+  "antigravity-gemini-3.1-flash-image": {
+    name: "Gemini 3.1 Flash Image (Antigravity)",
+    limit: { context: 1048576, output: 65536 },
+    modalities: DEFAULT_MODALITIES,
+  },
+  "antigravity-gpt-oss-120b-medium": {
+    name: "GPT-OSS 120B Medium (Antigravity)",
+    limit: { context: 131072, output: 16384 },
+    modalities: DEFAULT_MODALITIES,
+  },
+  "tab_flash_lite_preview": {
+    name: "Tab Flash Lite Preview (Antigravity)",
+    limit: { context: 16384, output: 4096 },
+    modalities: DEFAULT_MODALITIES,
+  },
   "antigravity-gemini-3-pro": {
     name: "Gemini 3 Pro (Antigravity)",
     limit: { context: 1048576, output: 65535 },
@@ -69,12 +142,12 @@ export const OPENCODE_MODEL_DEFINITIONS: OpencodeModelDefinitions = {
   },
   "antigravity-claude-sonnet-4-6": {
     name: "Claude Sonnet 4.6 (Antigravity)",
-    limit: { context: 200000, output: 64000 },
+    limit: { context: 250000, output: 64000 },
     modalities: DEFAULT_MODALITIES,
   },
   "antigravity-claude-opus-4-6-thinking": {
     name: "Claude Opus 4.6 Thinking (Antigravity)",
-    limit: { context: 200000, output: 64000 },
+    limit: { context: 250000, output: 64000 },
     modalities: DEFAULT_MODALITIES,
     variants: {
       low: { thinkingConfig: { thinkingBudget: 8192 } },

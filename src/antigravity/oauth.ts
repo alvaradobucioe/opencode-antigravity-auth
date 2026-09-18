@@ -7,6 +7,7 @@ import {
   ANTIGRAVITY_SCOPES,
   ANTIGRAVITY_ENDPOINT_FALLBACKS,
   ANTIGRAVITY_LOAD_ENDPOINTS,
+  ANTIGRAVITY_DEFAULT_PROJECT_ID,
   getAntigravityHeaders,
   GEMINI_CLI_HEADERS,
 } from "../constants";
@@ -190,9 +191,9 @@ async function fetchProjectID(accessToken: string): Promise<string> {
   }
 
   if (errors.length) {
-    log.warn("Failed to resolve Antigravity project via loadCodeAssist", { errors: errors.join("; ") });
+    log.warn("Failed to resolve Antigravity project via loadCodeAssist, using default", { errors: errors.join("; "), defaultProject: ANTIGRAVITY_DEFAULT_PROJECT_ID });
   }
-  return "";
+  return ANTIGRAVITY_DEFAULT_PROJECT_ID;
 }
 
 /**
@@ -254,8 +255,11 @@ export async function exchangeAntigravity(
     if (!effectiveProjectId) {
       effectiveProjectId = await fetchProjectID(tokenPayload.access_token);
     }
+    if (!effectiveProjectId) {
+      effectiveProjectId = ANTIGRAVITY_DEFAULT_PROJECT_ID;
+    }
 
-    const storedRefresh = `${refreshToken}|${effectiveProjectId || ""}`;
+    const storedRefresh = `${refreshToken}|${effectiveProjectId}`;
 
     return {
       type: "success",
@@ -263,7 +267,7 @@ export async function exchangeAntigravity(
       access: tokenPayload.access_token,
       expires: calculateTokenExpiry(startTime, tokenPayload.expires_in),
       email: userInfo.email,
-      projectId: effectiveProjectId || "",
+      projectId: effectiveProjectId,
     };
   } catch (error) {
     return {

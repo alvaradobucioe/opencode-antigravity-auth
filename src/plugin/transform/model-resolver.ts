@@ -47,16 +47,31 @@ export const MODEL_ALIASES: Record<string, string> = {
   "gemini-3-flash-low": "gemini-3-flash",
   "gemini-3-flash-medium": "gemini-3-flash",
   "gemini-3-flash-high": "gemini-3-flash",
+  "gemini-3.6-flash-low": "gemini-3.6-flash-tiered",
+  "gemini-3.6-flash-medium": "gemini-3.6-flash-tiered",
+  "gemini-3.6-flash-high": "gemini-3.6-flash-tiered",
+  "gemini-3.6-flash": "gemini-3.6-flash-tiered",
+  "gemini-3.7-flash-low": "gemini-3.7-flash-tiered",
+  "gemini-3.7-flash-medium": "gemini-3.7-flash-tiered",
+  "gemini-3.7-flash-high": "gemini-3.7-flash-tiered",
+  "gemini-3.7-flash": "gemini-3.7-flash-tiered",
+  "gemini-3.8-flash-low": "gemini-3.8-flash-tiered",
+  "gemini-3.8-flash-medium": "gemini-3.8-flash-tiered",
+  "gemini-3.8-flash-high": "gemini-3.8-flash-tiered",
+  "gemini-3.8-flash": "gemini-3.8-flash-tiered",
+  "gemini-3.5-flash-lite": "gemini-3.5-flash-lite",
+  "gemini-2.5-flash-thinking": "gemini-2.5-flash-thinking",
+  "gemini-3-flash-agent": "gemini-3-flash-agent",
+  "gemini-pro-agent": "gemini-pro-agent",
+  "gpt-oss-120b-medium": "gpt-oss-120b-medium",
+  "gemini-3.1-flash-image": "gemini-3.1-flash-image",
+  "tab_flash_lite_preview": "tab_flash_lite_preview",
 
   // Claude proxy names (gemini- prefix for compatibility)
   "gemini-claude-opus-4-6-thinking-low": "claude-opus-4-6-thinking",
   "gemini-claude-opus-4-6-thinking-medium": "claude-opus-4-6-thinking",
   "gemini-claude-opus-4-6-thinking-high": "claude-opus-4-6-thinking",
   "gemini-claude-sonnet-4-6": "claude-sonnet-4-6",
-
-  // Image generation models - only gemini-3-pro-image is available via Antigravity API
-  // Note: gemini-2.5-flash-image (Nano Banana) is NOT supported by Antigravity - only Google AI API
-  // Reference: Antigravity-Manager/src-tauri/src/proxy/common/model_mapping.rs
 };
 
 const TIER_REGEX = /-(minimal|low|medium|high)$/;
