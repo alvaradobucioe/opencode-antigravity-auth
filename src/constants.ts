@@ -1,22 +1,16 @@
 /**
  * Constants used for Antigravity OAuth flows and Cloud Code Assist API integration.
  */
-export const ANTIGRAVITY_CLIENT_ID = "1071006060591-tmhssin2h21lcre235vtolojh4g403ep.apps.googleusercontent.com";
-
-/**
- * Client secret issued for the Antigravity OAuth application.
- */
-export const ANTIGRAVITY_CLIENT_SECRET = "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";
-
-/**
- * Secondary Antigravity OAuth client credentials extracted from agy binary.
- */
-export const AGY_SECONDARY_CLIENT_ID = [
+export const ANTIGRAVITY_CLIENT_ID = [
   "884354919052",
   "-36trc1jjb3tguiac32ov6cod268c5blh",
   ".apps.googleusercontent.com",
 ].join("");
-export const AGY_SECONDARY_CLIENT_SECRET = [
+
+/**
+ * Client secret issued for the Antigravity OAuth application (extracted from agy binary).
+ */
+export const ANTIGRAVITY_CLIENT_SECRET = [
   "GOCSPX",
   "-9YQWpF7RWDC0QTdj",
   "-YxKMwR0ZtsX",
