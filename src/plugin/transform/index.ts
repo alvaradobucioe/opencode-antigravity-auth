@@ -44,7 +44,7 @@ export {
 } from "./claude";
 export type { ClaudeTransformOptions, ClaudeTransformResult } from "./claude";
 
-// Gemini transforms
+// Antigravity & Gemini transforms
 export {
   isGeminiModel,
   isGemini3Model,
@@ -55,8 +55,16 @@ export {
   buildImageGenerationConfig,
   normalizeGeminiTools,
   applyGeminiTransforms,
-} from "./gemini";
-export type { GeminiTransformOptions, GeminiTransformResult, ImageConfig } from "./gemini";
+  applyGeminiTransforms as applyAntigravityTransforms,
+  normalizeGeminiTools as normalizeAntigravityTools,
+} from "./antigravity";
+export type {
+  GeminiTransformOptions,
+  GeminiTransformResult,
+  GeminiTransformOptions as AntigravityTransformOptions,
+  GeminiTransformResult as AntigravityTransformResult,
+  ImageConfig,
+} from "./antigravity";
 
 // Cross-model sanitization
 export {

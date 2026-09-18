@@ -1,5 +1,5 @@
 import type { PluginInput } from "@opencode-ai/plugin";
-import type { AntigravityTokenExchangeResult } from "../antigravity/oauth";
+import type { AntigravityTokenExchangeResult } from "../agy/oauth";
 
 export interface OAuthAuthDetails {
   type: "oauth";

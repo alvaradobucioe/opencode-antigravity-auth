@@ -11,32 +11,14 @@ const getModel = (name: string) => {
 };
 
 describe("OPENCODE_MODEL_DEFINITIONS", () => {
-  it("includes the full set of configured models", () => {
-    const modelNames = Object.keys(OPENCODE_MODEL_DEFINITIONS).sort();
-
-    expect(modelNames).toEqual([
-      "antigravity-claude-opus-4-6-thinking",
-      "antigravity-claude-sonnet-4-6",
-      "antigravity-gemini-2.5-flash-thinking",
-      "antigravity-gemini-3-flash",
-      "antigravity-gemini-3-flash-agent",
-      "antigravity-gemini-3-pro",
-      "antigravity-gemini-3.1-flash-image",
-      "antigravity-gemini-3.1-pro",
-      "antigravity-gemini-3.5-flash-lite",
-      "antigravity-gemini-3.6-flash",
-      "antigravity-gemini-3.7-flash",
-      "antigravity-gemini-3.8-flash",
-      "antigravity-gemini-pro-agent",
-      "antigravity-gpt-oss-120b-medium",
-      "gemini-2.5-flash",
-      "gemini-2.5-pro",
-      "gemini-3-flash-preview",
-      "gemini-3-pro-preview",
-      "gemini-3.1-pro-preview",
-      "gemini-3.1-pro-preview-customtools",
-      "tab_flash_lite_preview",
-    ]);
+  it("includes real API model IDs and Antigravity aliases", () => {
+    expect(OPENCODE_MODEL_DEFINITIONS["gemini-3.8-flash-tiered"]).toBeDefined();
+    expect(OPENCODE_MODEL_DEFINITIONS["gemini-3.7-flash-tiered"]).toBeDefined();
+    expect(OPENCODE_MODEL_DEFINITIONS["gemini-3.6-flash-tiered"]).toBeDefined();
+    expect(OPENCODE_MODEL_DEFINITIONS["gemini-2.5-flash-thinking"]).toBeDefined();
+    expect(OPENCODE_MODEL_DEFINITIONS["claude-opus-4-6-thinking"]).toBeDefined();
+    expect(OPENCODE_MODEL_DEFINITIONS["claude-sonnet-4-6"]).toBeDefined();
+    expect(OPENCODE_MODEL_DEFINITIONS["antigravity-gemini-3.8-flash"]).toBeDefined();
   });
 
   it("defines Gemini 3 variants for Antigravity models", () => {

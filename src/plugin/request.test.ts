@@ -623,7 +623,7 @@ it("removes x-api-key header", () => {
       expect(headers.get("x-goog-user-project")).toBeNull();
     });
 
-    it("uses exact Code Assist headers for gemini-cli headerStyle", () => {
+    it("uses Antigravity headers for requests regardless of headerStyle", () => {
       const result = prepareAntigravityRequest(
         "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash:generateContent",
         { method: "POST", body: JSON.stringify({ contents: [] }) },
@@ -633,9 +633,7 @@ it("removes x-api-key header", () => {
         "gemini-cli"
       );
       const headers = result.init.headers as Headers;
-      expect(headers.get("User-Agent")).toBe("google-api-nodejs-client/9.15.1");
-      expect(headers.get("X-Goog-Api-Client")).toBe("gl-node/22.17.0");
-      expect(headers.get("Client-Metadata")).toBe("ideType=IDE_UNSPECIFIED,platform=PLATFORM_UNSPECIFIED,pluginType=GEMINI");
+      expect(headers.get("User-Agent")).toMatch(/^antigravity\//);
     });
 
     it("builds gemini-cli wrapped body without antigravity-only fields", () => {

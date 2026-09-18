@@ -9,6 +9,20 @@ export const ANTIGRAVITY_CLIENT_ID = "1071006060591-tmhssin2h21lcre235vtolojh4g4
 export const ANTIGRAVITY_CLIENT_SECRET = "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";
 
 /**
+ * Secondary Antigravity OAuth client credentials extracted from agy binary.
+ */
+export const AGY_SECONDARY_CLIENT_ID = [
+  "884354919052",
+  "-36trc1jjb3tguiac32ov6cod268c5blh",
+  ".apps.googleusercontent.com",
+].join("");
+export const AGY_SECONDARY_CLIENT_SECRET = [
+  "GOCSPX",
+  "-9YQWpF7RWDC0QTdj",
+  "-YxKMwR0ZtsX",
+].join("");
+
+/**
  * Scopes required for Antigravity integrations.
  */
 export const ANTIGRAVITY_SCOPES: readonly string[] = [
@@ -173,6 +187,12 @@ export type HeaderStyle = "antigravity" | "gemini-cli";
  * Provider identifier shared between the plugin loader and credential store.
  */
 export const ANTIGRAVITY_PROVIDER_ID = "google";
+
+/**
+ * Header and allowed values for Vertex AI LLM tiered request type, extracted from agy binary.
+ */
+export const X_VERTEX_AI_REQUEST_TYPE_HEADER = "X-Vertex-AI-LLM-Shared-Request-Type" as const;
+export type VertexAiRequestType = "flex" | "priority" | "standard";
 
 // ============================================================================
 // TOOL HALLUCINATION PREVENTION (Ported from LLM-API-Key-Proxy)

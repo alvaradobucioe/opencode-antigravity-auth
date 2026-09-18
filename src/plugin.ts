@@ -9,8 +9,8 @@ import {
   getAntigravityHeaders,
   type HeaderStyle,
 } from "./constants";
-import { authorizeAntigravity, exchangeAntigravity } from "./antigravity/oauth";
-import type { AntigravityTokenExchangeResult } from "./antigravity/oauth";
+import { authorizeAntigravity, exchangeAntigravity } from "./agy/oauth";
+import type { AntigravityTokenExchangeResult } from "./agy/oauth";
 import { accessTokenExpired, isOAuthAuth, parseRefreshParts, formatRefreshParts } from "./plugin/auth";
 import { promptAddAnotherAccount, promptLoginMode, promptProjectId } from "./plugin/cli";
 import { ensureProjectContext } from "./plugin/project";

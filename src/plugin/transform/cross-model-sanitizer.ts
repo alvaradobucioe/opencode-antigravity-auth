@@ -8,7 +8,7 @@
  */
 
 import { isClaudeModel } from "./claude";
-import { isGeminiModel } from "./gemini";
+import { isGeminiModel } from "./antigravity";
 
 export type ModelFamily = "claude" | "gemini" | "unknown";
 

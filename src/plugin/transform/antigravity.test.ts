@@ -11,10 +11,10 @@ import {
   applyGeminiTransforms,
   toGeminiSchema,
   wrapToolsAsFunctionDeclarations,
-} from "./gemini";
+} from "./antigravity";
 import type { RequestPayload } from "./types";
 
-describe("transform/gemini", () => {
+describe("transform/antigravity", () => {
   describe("isGeminiModel", () => {
     it("returns true for gemini-pro", () => {
       expect(isGeminiModel("gemini-pro")).toBe(true);

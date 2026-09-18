@@ -1,8 +1,6 @@
 import crypto from "node:crypto";
 import {
   ANTIGRAVITY_ENDPOINT,
-  GEMINI_CLI_ENDPOINT,
-  GEMINI_CLI_HEADERS,
   EMPTY_SCHEMA_PLACEHOLDER_NAME,
   EMPTY_SCHEMA_PLACEHOLDER_DESCRIPTION,
   SKIP_THOUGHT_SIGNATURE,
@@ -810,7 +808,7 @@ export function prepareAntigravityRequest(
   let effectiveModel = resolved.actualModel;
 
   const streaming = rawAction === STREAM_ACTION;
-  const defaultEndpoint = headerStyle === "gemini-cli" ? GEMINI_CLI_ENDPOINT : ANTIGRAVITY_ENDPOINT;
+  const defaultEndpoint = ANTIGRAVITY_ENDPOINT;
   const baseEndpoint = endpointOverride ?? defaultEndpoint;
   const transformedUrl = `${baseEndpoint}/v1internal:${rawAction}${streaming ? "?alt=sse" : ""}`;
 
@@ -1536,23 +1534,12 @@ export function prepareAntigravityRequest(
     }
   }
 
-  if (headerStyle === "antigravity") {
-    // Use randomized headers as the fallback pool for Antigravity mode
-    const selectedHeaders = getRandomizedHeaders("antigravity", requestedModel);
+  // Antigravity AGY mode: Match Antigravity CLI behavior
+  const selectedHeaders = getRandomizedHeaders("antigravity", requestedModel);
+  const fingerprint = options?.fingerprint ?? getSessionFingerprint();
+  const fingerprintHeaders = buildFingerprintHeaders(fingerprint);
 
-    // Antigravity mode: Match Antigravity Manager behavior
-    // AM only sends User-Agent on content requests — no X-Goog-Api-Client, no Client-Metadata header
-    // (ideType=ANTIGRAVITY goes in request body metadata via project.ts, not as a header)
-    const fingerprint = options?.fingerprint ?? getSessionFingerprint();
-    const fingerprintHeaders = buildFingerprintHeaders(fingerprint);
-
-    headers.set("User-Agent", fingerprintHeaders["User-Agent"] || selectedHeaders["User-Agent"]);
-  } else {
-    // Gemini CLI mode: match opencode-gemini-auth Code Assist header set exactly
-    headers.set("User-Agent", GEMINI_CLI_HEADERS["User-Agent"]);
-    headers.set("X-Goog-Api-Client", GEMINI_CLI_HEADERS["X-Goog-Api-Client"]);
-    headers.set("Client-Metadata", GEMINI_CLI_HEADERS["Client-Metadata"]);
-  }
+  headers.set("User-Agent", fingerprintHeaders["User-Agent"] || selectedHeaders["User-Agent"]);
   return {
     request: transformedUrl,
     init: {
