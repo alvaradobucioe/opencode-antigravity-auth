@@ -180,7 +180,7 @@ export type HeaderStyle = "antigravity" | "gemini-cli";
 /**
  * Provider identifier shared between the plugin loader and credential store.
  */
-export const ANTIGRAVITY_PROVIDER_ID = "google";
+export const ANTIGRAVITY_PROVIDER_ID = "antigravity";
 
 /**
  * Header and allowed values for Vertex AI LLM tiered request type, extracted from agy binary.

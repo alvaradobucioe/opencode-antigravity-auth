@@ -488,11 +488,9 @@ async function verifyAccountAccess(
     Authorization: `Bearer ${refreshedAuth.access}`,
     "Content-Type": "application/json",
   };
-  if (projectId) {
-    headers["x-goog-user-project"] = projectId;
-  }
 
   const requestBody = {
+    project: projectId,
     model: "gemini-3-flash",
     request: {
       model: "gemini-3-flash",
@@ -2495,7 +2493,7 @@ export const createAntigravityPlugin = (providerId: string) => async (
     },
     methods: [
       {
-        label: "OAuth with Google (Antigravity)",
+        label: "Antigravity OAuth",
         type: "oauth",
         authorize: async (inputs?: Record<string, string>) => {
           const isHeadless = !!(
