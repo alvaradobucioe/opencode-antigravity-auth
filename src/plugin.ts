@@ -2,6 +2,7 @@ import { exec } from "node:child_process";
 import { tool } from "@opencode-ai/plugin";
 import {
   ANTIGRAVITY_DEFAULT_PROJECT_ID,
+  ANTIGRAVITY_ENDPOINT,
   ANTIGRAVITY_ENDPOINT_FALLBACKS,
   ANTIGRAVITY_ENDPOINT_PROD,
   ANTIGRAVITY_PROVIDER_ID,
@@ -505,7 +506,7 @@ async function verifyAccountAccess(
 
   let response: Response;
   try {
-    response = await fetch(`${ANTIGRAVITY_ENDPOINT_PROD}/v1internal:streamGenerateContent?alt=sse`, {
+    response = await fetch(`${ANTIGRAVITY_ENDPOINT}/v1internal:streamGenerateContent?alt=sse`, {
       method: "POST",
       headers,
       body: JSON.stringify(requestBody),
@@ -1955,13 +1956,6 @@ export const createAntigravityPlugin = (providerId: string) => async (
               }
 
               const currentEndpoint = ANTIGRAVITY_ENDPOINT_FALLBACKS[i];
-
-              // Skip sandbox endpoints for Gemini CLI models - they only work with Antigravity quota
-              // Gemini CLI models must use production endpoint (cloudcode-pa.googleapis.com)
-              if (headerStyle === "gemini-cli" && currentEndpoint !== ANTIGRAVITY_ENDPOINT_PROD) {
-                pushDebug(`Skipping sandbox endpoint ${currentEndpoint} for gemini-cli headerStyle`);
-                continue;
-              }
 
               try {
                 const prepared = prepareAntigravityRequest(

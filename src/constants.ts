@@ -59,11 +59,10 @@ export const ANTIGRAVITY_LOAD_ENDPOINTS = [
 export const ANTIGRAVITY_ENDPOINT = ANTIGRAVITY_ENDPOINT_DAILY;
 
 /**
- * Gemini CLI endpoint (production).
+ * Gemini CLI endpoint (defaults to daily sandbox for unrestricted inference without quota limits).
  * Used for models without :antigravity suffix.
- * Same as opencode-gemini-auth's GEMINI_CODE_ASSIST_ENDPOINT.
  */
-export const GEMINI_CLI_ENDPOINT = ANTIGRAVITY_ENDPOINT_PROD;
+export const GEMINI_CLI_ENDPOINT = ANTIGRAVITY_ENDPOINT_DAILY;
 
 /**
  * Default project id used for consumer accounts and when Antigravity does not return one.
