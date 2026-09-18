@@ -64,4 +64,23 @@ describe("OPENCODE_MODEL_DEFINITIONS", () => {
       max: { thinkingConfig: { thinkingBudget: 32768 } },
     });
   });
+
+  it("calculates model limits dynamically", () => {
+    expect(getModel("antigravity-gemini-3.8-flash").limit).toEqual({ context: 1048576, output: 65536 });
+    expect(getModel("antigravity-claude-opus-4-6-thinking").limit).toEqual({ context: 250000, output: 64000 });
+    expect(getModel("antigravity-gpt-oss-120b-medium").limit).toEqual({ context: 131072, output: 16384 });
+    expect(getModel("tab_flash_lite_preview").limit).toEqual({ context: 16384, output: 4096 });
+    expect(getModel("antigravity-gemini-3-pro").limit).toEqual({ context: 1048576, output: 65535 });
+  });
+
+  it("calculates modalities dynamically", () => {
+    expect(getModel("antigravity-gemini-3.8-flash").modalities).toEqual({
+      input: ["text", "image", "pdf"],
+      output: ["text"],
+    });
+    expect(getModel("antigravity-gemini-3.1-flash-image").modalities).toEqual({
+      input: ["text", "image", "pdf"],
+      output: ["image", "text"],
+    });
+  });
 });
