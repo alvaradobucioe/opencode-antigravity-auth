@@ -7,22 +7,21 @@ interface ModelTest {
 }
 
 const MODELS: ModelTest[] = [
-  // Gemini CLI (direct Google API)
-  { model: "google/gemini-3-flash-preview", category: "gemini-cli" },
-  { model: "google/gemini-3-pro-preview", category: "gemini-cli" },
-  { model: "google/gemini-2.5-pro", category: "gemini-cli" },
-  { model: "google/gemini-2.5-flash", category: "gemini-cli" },
-
-  // Antigravity Gemini
-  { model: "google/antigravity-gemini-3-pro-low", category: "antigravity-gemini" },
-  { model: "google/antigravity-gemini-3-pro-high", category: "antigravity-gemini" },
+  // Antigravity Gemini 3.x Tiered & Thinking Models
+  { model: "google/antigravity-gemini-3.8-flash", category: "antigravity-gemini" },
+  { model: "google/antigravity-gemini-3.7-flash", category: "antigravity-gemini" },
+  { model: "google/antigravity-gemini-3.6-flash", category: "antigravity-gemini" },
+  { model: "google/antigravity-gemini-3.5-flash-lite", category: "antigravity-gemini" },
+  { model: "google/antigravity-gemini-2.5-flash-thinking", category: "antigravity-gemini" },
+  { model: "google/antigravity-gemini-3-pro", category: "antigravity-gemini" },
   { model: "google/antigravity-gemini-3-flash", category: "antigravity-gemini" },
+  { model: "google/antigravity-gemini-3-flash-agent", category: "antigravity-gemini" },
+  { model: "google/antigravity-gemini-pro-agent", category: "antigravity-gemini" },
+  { model: "google/antigravity-gpt-oss-120b-medium", category: "antigravity-gemini" },
 
   // Antigravity Claude
   { model: "google/antigravity-claude-sonnet-4-6", category: "antigravity-claude" },
-  { model: "google/antigravity-claude-opus-4-6-thinking-low", category: "antigravity-claude" },
-  { model: "google/antigravity-claude-opus-4-6-thinking-medium", category: "antigravity-claude" },
-  { model: "google/antigravity-claude-opus-4-6-thinking-high", category: "antigravity-claude" },
+  { model: "google/antigravity-claude-opus-4-6-thinking", category: "antigravity-claude" },
 ];
 
 const TEST_PROMPT = "Reply with exactly one word: WORKING";
