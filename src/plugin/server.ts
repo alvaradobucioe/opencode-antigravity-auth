@@ -124,8 +124,9 @@ function getBindAddress(): string {
     return "127.0.0.1";
   }
   
-  // WSL and remote environments need 0.0.0.0 to be reachable
-  if (isWSL() || isRemoteEnvironment()) {
+  // Windows, WSL, and remote environments need 0.0.0.0 to prevent ERR_CONNECTION_REFUSED
+  // when localhost resolves to IPv6 (::1)
+  if (process.platform === "win32" || isWSL() || isRemoteEnvironment()) {
     return "0.0.0.0";
   }
   

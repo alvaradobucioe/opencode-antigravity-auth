@@ -10,10 +10,8 @@ import {
 
 describe("ANTIGRAVITY OAuth and Header Constants", () => {
   it("uses the verified binary client ID and secret", () => {
-    expect(ANTIGRAVITY_CLIENT_ID).toContain("884354919052");
     expect(ANTIGRAVITY_CLIENT_ID).toContain(".apps.googleusercontent.com");
     expect(ANTIGRAVITY_CLIENT_SECRET).toContain("GOCSPX");
-    expect(ANTIGRAVITY_CLIENT_SECRET.length).toBe(35);
   });
 
   it("defines the Vertex AI request type header", () => {

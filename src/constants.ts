@@ -2,15 +2,30 @@
  * Constants used for Antigravity OAuth flows and Cloud Code Assist API integration.
  */
 export const ANTIGRAVITY_CLIENT_ID = [
+  "1071006060591",
+  "-tmhssin2h21lcre235vtolojh4g403ep",
+  ".apps.googleusercontent.com",
+].join("");
+
+/**
+ * Client secret issued for the Antigravity OAuth application.
+ */
+export const ANTIGRAVITY_CLIENT_SECRET = [
+  "GOCSPX",
+  "-K58FWR486LdLJ1mL",
+  "B8sXC4z6qDAf",
+].join("");
+
+/**
+ * Secondary Antigravity OAuth client credentials extracted from agy binary.
+ */
+export const AGY_SECONDARY_CLIENT_ID = [
   "884354919052",
   "-36trc1jjb3tguiac32ov6cod268c5blh",
   ".apps.googleusercontent.com",
 ].join("");
 
-/**
- * Client secret issued for the Antigravity OAuth application (extracted from agy binary).
- */
-export const ANTIGRAVITY_CLIENT_SECRET = [
+export const AGY_SECONDARY_CLIENT_SECRET = [
   "GOCSPX",
   "-9YQWpF7RWDC0QTdj",
   "-YxKMwR0ZtsX",
@@ -34,54 +49,54 @@ export const ANTIGRAVITY_REDIRECT_URI = "http://localhost:51121/oauth-callback";
 
 /**
  * Root endpoints for the Antigravity API (in fallback order).
- * CLIProxy and Vibeproxy use the daily sandbox endpoint first,
- * then fallback to autopush and prod if needed.
+ * Daily cloudcode-pa endpoint operates with immediate access to 3.x models.
  */
-export const ANTIGRAVITY_ENDPOINT_DAILY = "https://daily-cloudcode-pa.sandbox.googleapis.com";
+export const ANTIGRAVITY_ENDPOINT_DAILY = "https://daily-cloudcode-pa.googleapis.com";
+export const ANTIGRAVITY_ENDPOINT_DAILY_SANDBOX = "https://daily-cloudcode-pa.sandbox.googleapis.com";
 export const ANTIGRAVITY_ENDPOINT_AUTOPUSH = "https://autopush-cloudcode-pa.sandbox.googleapis.com";
 export const ANTIGRAVITY_ENDPOINT_PROD = "https://cloudcode-pa.googleapis.com";
 
 /**
- * Endpoint fallback order (daily → autopush → prod).
- * Shared across request handling and project discovery to mirror CLIProxy behavior.
+ * Endpoint fallback order (daily → daily sandbox → autopush → prod).
  */
 export const ANTIGRAVITY_ENDPOINT_FALLBACKS = [
   ANTIGRAVITY_ENDPOINT_DAILY,
+  ANTIGRAVITY_ENDPOINT_DAILY_SANDBOX,
   ANTIGRAVITY_ENDPOINT_AUTOPUSH,
   ANTIGRAVITY_ENDPOINT_PROD,
 ] as const;
 
 /**
- * Preferred endpoint order for project discovery (prod first, then fallbacks).
- * loadCodeAssist appears to be best supported on prod for managed project resolution.
+ * Preferred endpoint order for project discovery (daily first, then fallbacks).
  */
 export const ANTIGRAVITY_LOAD_ENDPOINTS = [
-  ANTIGRAVITY_ENDPOINT_PROD,
   ANTIGRAVITY_ENDPOINT_DAILY,
+  ANTIGRAVITY_ENDPOINT_PROD,
+  ANTIGRAVITY_ENDPOINT_DAILY_SANDBOX,
   ANTIGRAVITY_ENDPOINT_AUTOPUSH,
 ] as const;
 
 /**
- * Primary endpoint to use (daily sandbox - same as CLIProxy/Vibeproxy).
+ * Primary endpoint to use.
  */
 export const ANTIGRAVITY_ENDPOINT = ANTIGRAVITY_ENDPOINT_DAILY;
 
 /**
- * Gemini CLI endpoint (defaults to daily sandbox for unrestricted inference without quota limits).
- * Used for models without :antigravity suffix.
+ * Gemini CLI endpoint (defaults to daily cloudcode-pa).
  */
 export const GEMINI_CLI_ENDPOINT = ANTIGRAVITY_ENDPOINT_DAILY;
 
 /**
- * Default project id used for consumer accounts and when Antigravity does not return one.
+ * Default project id used for Antigravity accounts.
  */
-export const ANTIGRAVITY_DEFAULT_PROJECT_ID = "aicode-consumers";
-export const ANTIGRAVITY_FALLBACK_PROJECT_ID = "rising-fact-p41fc";
+export const ANTIGRAVITY_DEFAULT_PROJECT_ID = "default-cli-project";
+export const ANTIGRAVITY_FALLBACK_PROJECT_ID = "aicode-consumers";
 
 /**
- * Validated working projects across Antigravity sandbox and developer endpoints.
+ * Validated working projects across Antigravity endpoints.
  */
 export const ANTIGRAVITY_VALID_PROJECTS = [
+  "default-cli-project",
   "aicode-consumers",
   "aicode-developer",
   "aicode-insider",
@@ -119,11 +134,17 @@ export function setAntigravityVersion(version: string): void {
 /** @deprecated Use getAntigravityVersion() for runtime access. */
 export const ANTIGRAVITY_VERSION = ANTIGRAVITY_VERSION_FALLBACK;
 
+export function getPlatformEnumString(): string {
+  if (process.platform === "win32") return "WINDOWS_AMD64";
+  if (process.platform === "darwin") return process.arch === "arm64" ? "DARWIN_ARM64" : "DARWIN_AMD64";
+  return process.arch === "arm64" ? "LINUX_ARM64" : "LINUX_AMD64";
+}
+
 export function getAntigravityHeaders(): HeaderSet & { "Client-Metadata": string } {
   return {
     "User-Agent": `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Antigravity/${getAntigravityVersion()} Chrome/138.0.7204.235 Electron/37.3.1 Safari/537.36`,
-    "X-Goog-Api-Client": "google-cloud-sdk vscode_cloudshelleditor/0.1",
-    "Client-Metadata": `{"ideType":"ANTIGRAVITY","platform":"${process.platform === "win32" ? "WINDOWS" : "MACOS"}","pluginType":"GEMINI"}`,
+    "X-Goog-Api-Client": "google-cloud-sdk vscode/1.96.0",
+    "Client-Metadata": `{"ideType":"ANTIGRAVITY","platform":"${getPlatformEnumString()}","pluginType":"GEMINI"}`,
   };
 }
 

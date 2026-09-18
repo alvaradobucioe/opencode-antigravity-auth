@@ -3000,7 +3000,7 @@ export const createAntigravityPlugin = (providerId: string) => async (
 
                 if (listener) {
                   try {
-                    const SOFT_TIMEOUT_MS = 30000;
+                    const SOFT_TIMEOUT_MS = 300000;
                     const callbackPromise = listener.waitForCallback();
                     const timeoutPromise = new Promise<never>((_, reject) =>
                       setTimeout(() => reject(new Error("SOFT_TIMEOUT")), SOFT_TIMEOUT_MS)
@@ -3011,7 +3011,7 @@ export const createAntigravityPlugin = (providerId: string) => async (
                       callbackUrl = await Promise.race([callbackPromise, timeoutPromise]);
                     } catch (err) {
                       if (err instanceof Error && err.message === "SOFT_TIMEOUT") {
-                        console.log("\n⏳ Automatic callback not received after 30 seconds.");
+                        console.log("\n⏳ Automatic callback not received after 5 minutes.");
                         console.log("You can paste the redirect URL manually.\n");
                         console.log("OAuth URL (in case you need it again):");
                         console.log(authorization.url + "\n");
@@ -3204,7 +3204,7 @@ export const createAntigravityPlugin = (providerId: string) => async (
                 "Complete sign-in in your browser. We'll automatically detect the redirect back to localhost.",
               method: "auto",
               callback: async (): Promise<AntigravityTokenExchangeResult> => {
-                const CALLBACK_TIMEOUT_MS = 30000;
+                const CALLBACK_TIMEOUT_MS = 300000;
                 try {
                   const callbackPromise = listener.waitForCallback();
                   const timeoutPromise = new Promise<never>((_, reject) =>
