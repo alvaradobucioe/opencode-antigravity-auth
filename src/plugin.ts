@@ -52,7 +52,7 @@ import { initLogger, createLogger } from "./plugin/logger";
 import { initHealthTracker, getHealthTracker, initTokenTracker, getTokenTracker } from "./plugin/rotation";
 import { initAntigravityVersion } from "./plugin/version";
 import { executeSearch } from "./plugin/search";
-import { detectModelsFromApi, getVerifiedModelDefinitions } from "./plugin/models/detector";
+import { detectAndFilterModelsFromApi, detectModelsFromApi, getVerifiedModelDefinitions } from "./plugin/models/detector";
 import type {
   GetAuth,
   LoaderResult,
@@ -1451,7 +1451,23 @@ export const createAntigravityPlugin = (providerId: string) => async (
         if (auth.access && !accessTokenExpired(auth)) {
           const primaryAccount = accountManager.getAccounts()[0];
           const discoveryProject = primaryAccount?.parts.projectId || ANTIGRAVITY_DEFAULT_PROJECT_ID;
-          detectedModels = await detectModelsFromApi(auth.access, discoveryProject, ANTIGRAVITY_ENDPOINT);
+          
+          // Initial fast discovery without blocking
+          detectedModels = await detectAndFilterModelsFromApi(auth.access, discoveryProject, {
+            preferredEndpoint: ANTIGRAVITY_ENDPOINT,
+            shouldProbe: false,
+          });
+
+          // In background, perform live probe validation and synchronize opencode.json
+          detectAndFilterModelsFromApi(auth.access, discoveryProject, {
+            preferredEndpoint: ANTIGRAVITY_ENDPOINT,
+            shouldProbe: true,
+          })
+            .then(async (probedModels) => {
+              const { updateOpencodeConfig } = await import("./plugin/config/updater");
+              await updateOpencodeConfig({ models: probedModels, syncAntigravityProvider: true });
+            })
+            .catch(() => {});
         } else {
           detectedModels = getVerifiedModelDefinitions();
         }

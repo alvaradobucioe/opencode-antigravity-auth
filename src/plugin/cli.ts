@@ -9,7 +9,7 @@ import {
 } from "./ui/auth-menu";
 import { updateOpencodeConfig } from "./config/updater";
 import { loadAccounts } from "./storage";
-import { detectModelsFromApi, getVerifiedModelDefinitions } from "./models/detector";
+import { detectAndFilterModelsFromApi, detectModelsFromApi, getVerifiedModelDefinitions } from "./models/detector";
 
 export async function promptProjectId(): Promise<string> {
   const rl = createInterface({ input, output });
@@ -145,7 +145,7 @@ export async function promptLoginMode(existingAccounts: ExistingAccountInfo[]): 
         return { mode: "fresh", deleteAll: true };
 
       case "configure-models": {
-        console.log("\n🔍 Detecting available models from Antigravity API...");
+        console.log("\n🔍 Detecting and probing available models from Antigravity API...");
         let dynamicModels: Record<string, unknown> | undefined;
         try {
           const stored = await loadAccounts();
@@ -159,21 +159,31 @@ export async function promptLoginMode(existingAccounts: ExistingAccountInfo[]): 
             );
             if (refreshed?.access) {
               const projectId = activeAcc.projectId || "aicode-consumers";
-              dynamicModels = await detectModelsFromApi(refreshed.access, projectId);
-              console.log(`✓ Fetched ${Object.keys(dynamicModels).length} model definitions from live API`);
+              console.log(`Connecting to unrestricted endpoint with project [${projectId}]...`);
+              dynamicModels = await detectAndFilterModelsFromApi(refreshed.access, projectId, {
+                shouldProbe: true,
+                onProgress: (modelId, ok, status) => {
+                  if (ok) {
+                    console.log(`  ✓ ${modelId} (${status ?? 200} OK)`);
+                  } else {
+                    console.log(`  ✗ ${modelId} (excluded: ${status ?? "incompatible"})`);
+                  }
+                },
+              });
+              console.log(`\n✓ Verified ${Object.keys(dynamicModels).length} working model definitions for your account.`);
             }
           }
-        } catch {
-          // If network / auth fails, fallback to verified models catalog
+        } catch (err) {
+          console.warn("Dynamic probing error, falling back to verified consumer catalog:", err);
         }
 
         if (!dynamicModels) {
           dynamicModels = getVerifiedModelDefinitions();
         }
 
-        const result = await updateOpencodeConfig({ models: dynamicModels });
+        const result = await updateOpencodeConfig({ models: dynamicModels, syncAntigravityProvider: true });
         if (result.success) {
-          console.log(`\n✓ Models configured in ${result.configPath}\n`);
+          console.log(`\n✓ Models configured in ${result.configPath} for providers "google" and "antigravity"\n`);
         } else {
           console.log(`\n✗ Failed to configure models: ${result.error}\n`);
         }

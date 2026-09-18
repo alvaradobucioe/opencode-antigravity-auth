@@ -63,4 +63,45 @@ describe("Antigravity Dynamic Model Detector", () => {
     expect(definitions["antigravity-gemini-3.8-flash-tiered"]).toBeDefined();
     expect(definitions["gemini-2.5-flash-thinking"]).toBeDefined();
   });
+
+  it("probes candidate models and discards non-working models", async () => {
+    const { probeModel, probeAndFilterValidModels } = await import("./detector");
+
+    // Mock fetch
+    const originalFetch = globalThis.fetch;
+    try {
+      globalThis.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
+        const bodyStr = typeof init?.body === "string" ? init.body : "";
+        if (bodyStr.includes("working-model")) {
+          return new Response(JSON.stringify({ candidates: [{ content: { parts: [{ text: "pong" }] } }] }), { status: 200 });
+        }
+        if (bodyStr.includes("rate-limited-model")) {
+          return new Response(JSON.stringify({ error: { code: 429, message: "Individual quota reached" } }), { status: 429 });
+        }
+        return new Response(JSON.stringify({ error: { code: 400, message: "Invalid argument" } }), { status: 400 });
+      };
+
+      const probeOk = await probeModel("working-model", "fake-token");
+      expect(probeOk.ok).toBe(true);
+      expect(probeOk.status).toBe(200);
+
+      const probe429 = await probeModel("rate-limited-model", "fake-token");
+      expect(probe429.ok).toBe(false);
+      expect(probe429.status).toBe(429);
+
+      const filtered = await probeAndFilterValidModels(
+        {
+          "working-model": { maxTokens: 1000 },
+          "rate-limited-model": { maxTokens: 1000 },
+        },
+        "fake-token",
+        "test-proj",
+      );
+
+      expect(filtered["working-model"]).toBeDefined();
+      expect(filtered["rate-limited-model"]).toBeUndefined();
+    } finally {
+      globalThis.fetch = originalFetch;
+    }
+  });
 });

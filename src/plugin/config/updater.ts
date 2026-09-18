@@ -37,6 +37,8 @@ export interface UpdateConfigOptions {
   configPath?: string;
   /** Custom model definitions (e.g. dynamically discovered from API) */
   models?: Record<string, unknown>;
+  /** Whether to synchronize provider.antigravity alongside provider.google */
+  syncAntigravityProvider?: boolean;
 }
 
 // =============================================================================
@@ -156,6 +158,18 @@ export async function updateOpencodeConfig(
     // Replace google models with plugin models (either custom dynamic models or defaults)
     const modelsToConfigure = options.models ?? OPENCODE_MODEL_DEFINITIONS;
     config.provider.google.models = { ...modelsToConfigure };
+    config.provider.google.name = "Antigravity";
+
+    // Synchronize provider.antigravity if it exists or if explicitly requested
+    if (config.provider.antigravity || options.syncAntigravityProvider === true) {
+      if (!config.provider.antigravity || typeof config.provider.antigravity !== "object") {
+        config.provider.antigravity = {};
+      }
+      const antigravityProvider = config.provider.antigravity as Record<string, unknown>;
+      antigravityProvider.npm = "@ai-sdk/google";
+      antigravityProvider.models = { ...modelsToConfigure };
+      antigravityProvider.name = "Antigravity";
+    }
 
     // Ensure config directory exists
     const configDir = dirname(configPath);
